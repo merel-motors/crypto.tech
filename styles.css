@@ -55,3 +55,40 @@ footer {
     background-color: #333;
     color: white;
 }
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #1e1e1e;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#annonces-container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.annonce {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background: #222;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.crypto {
+    border-left: 5px solid #f39c12;
+}
+
+.forex {
+    border-left: 5px solid #3498db;
+}
