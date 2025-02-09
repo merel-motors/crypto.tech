@@ -95,3 +95,62 @@ setInterval(() => {
     fetchCryptoPrices();
     fetchForexPrices();
 }, 60000);
+const express = require("express");
+const mongoose = require("mongoose");
+const cron = require("node-cron");
+
+const app = express();
+const PORT = 3000;
+
+mongoose.connect("mongodb://localhost:27017/annonces", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const annonceSchema = new mongoose.Schema({
+  type: String, // "crypto" ou "forex"
+  message: String,
+  date: { type: Date, default: Date.now },
+});
+
+const Annonce = mongoose.model("Annonce", annonceSchema);
+
+// Fonction pour générer des annonces aléatoires
+const generateAnnonces = async () => {
+  await Annonce.deleteMany({}); // Suppression des anciennes annonces
+
+  const cryptoMessages = [
+    "Bitcoin atteint un nouveau sommet !",
+    "Ethereum voit une augmentation de 5%",
+    "Solana en forte croissance aujourd'hui",
+  ];
+
+  const forexMessages = [
+    "EUR/USD en légère baisse",
+    "Le GBP/USD montre des signes de reprise",
+    "USD/JPY en tendance haussière",
+  ];
+
+  const annonces = [];
+  for (let i = 0; i < 5; i++) {
+    annonces.push({ type: "crypto", message: cryptoMessages[Math.floor(Math.random() * cryptoMessages.length)] });
+    annonces.push({ type: "forex", message: forexMessages[Math.floor(Math.random() * forexMessages.length)] });
+  }
+
+  await Annonce.insertMany(annonces);
+  console.log("Annonces mises à jour");
+};
+
+// Tâche cron pour mettre à jour les annonces toutes les 12 heures
+cron.schedule("0 */12 * * *", generateAnnonces);
+
+// Route API pour récupérer les annonces
+app.get("/annonces", async (req, res) => {
+  const annonces = await Annonce.find();
+  res.json(annonces);
+});
+
+app.listen(PORT, () => {
+  console.log(`Serveur en écoute sur http://localhost:${PORT}`);
+  generateAnnonces(); // Générer des annonces au démarrage
+});
