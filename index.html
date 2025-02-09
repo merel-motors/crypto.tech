@@ -59,3 +59,40 @@
 </body>
 </html>
 <img src="https://raw.githubusercontent.com/TON_UTILISATEUR/TON_REPO/main/chemin/vers/image.png" alt="Description de l'image">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto & Forex</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Crypto & Forex Annonces</h1>
+    </header>
+
+    <main id="annonces-container">
+        <p>Chargement des annonces...</p>
+    </main>
+
+    <script>
+        async function fetchAnnonces() {
+            const response = await fetch('/annonces');
+            const annonces = await response.json();
+            const container = document.getElementById('annonces-container');
+
+            container.innerHTML = '';
+            annonces.forEach(annonce => {
+                const div = document.createElement('div');
+                div.className = 'annonce ' + annonce.type;
+                div.textContent = annonce.message;
+                container.appendChild(div);
+            });
+        }
+
+        fetchAnnonces();
+        setInterval(fetchAnnonces, 60000); // Actualisation toutes les 60 secondes
+    </script>
+</body>
+</html>
