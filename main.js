@@ -154,3 +154,37 @@ app.listen(PORT, () => {
   console.log(`Serveur en écoute sur http://localhost:${PORT}`);
   generateAnnonces(); // Générer des annonces au démarrage
 });
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+
+let previousPrices = {}; // Stocke les prix précédents
+
+// Simule des données de prix (en réalité, utilise une API de marché)
+const getFakePrices = () => {
+    return [
+        { name: "Bitcoin", price: Math.random() * (55000 - 48000) + 48000 },
+        { name: "Ethereum", price: Math.random() * (4000 - 3500) + 3500 },
+        { name: "EUR/USD", price: Math.random() * (1.20 - 1.10) + 1.10 }
+    ];
+};
+
+app.get('/prix', (req, res) => {
+    const prices = getFakePrices();
+    const trends = prices.map(asset => {
+        const previousPrice = previousPrices[asset.name] || asset.price; // Si pas de prix précédent, on prend l’actuel
+        previousPrices[asset.name] = asset.price; // Mise à jour du prix précédent
+
+        return {
+            name: asset.name,
+            price: asset.price.toFixed(2),
+            trend: asset.price > previousPrice ? "📈 Hausse" : "📉 Baisse"
+        };
+    });
+
+    res.json(trends);
+});
+
+app.listen(3000, () => console.log('Serveur démarré sur http://localhost:3000'));
