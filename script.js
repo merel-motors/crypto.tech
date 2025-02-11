@@ -72,3 +72,34 @@ async function checkAlerts() {
 }
 
 setInterval(checkAlerts, 60000); // Vérifie toutes les 60 sec
+const translations = {
+    fr: { title: "Crypto & Forex en Temps Réel" },
+    en: { title: "Crypto & Forex Live Prices" },
+    es: { title: "Precios en Vivo de Crypto & Forex" }
+};
+
+document.getElementById('language').addEventListener('change', function() {
+    let lang = this.value;
+    document.querySelector('h1').textContent = translations[lang].title;
+});
+const themeButton = document.getElementById('toggle-theme');
+themeButton.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    if (document.body.classList.contains('light-mode')) {
+        themeButton.textContent = '🌑 Mode sombre';
+    } else {
+        themeButton.textContent = '🌙 Mode clair';
+    }
+});
+document.getElementById('search').addEventListener('input', function() {
+    let filter = this.value.toLowerCase();
+    let annonces = document.querySelectorAll('.annonce');
+
+    annonces.forEach(annonce => {
+        if (annonce.textContent.toLowerCase().includes(filter)) {
+            annonce.style.display = "block";
+        } else {
+            annonce.style.display = "none";
+        }
+    });
+});
