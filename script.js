@@ -28,3 +28,28 @@ async function updateMarketTrends() {
 // Mise à jour toutes les 30 secondes
 setInterval(updateMarketTrends, 30000);
 updateMarketTrends();
+const ctx = document.getElementById('priceChart').getContext('2d');
+const priceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [], // Les dates
+        datasets: [{
+            label: 'Prix en USD',
+            data: [], // Les valeurs
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }]
+    }
+});
+
+async function updateChart() {
+    const response = await fetch('/prix'); 
+    const data = await response.json();
+
+    priceChart.data.labels = data.map(d => d.date);
+    priceChart.data.datasets[0].data = data.map(d => d.price);
+    priceChart.update();
+}
+
+setInterval(updateChart, 5000); // Mise à jour toutes les 5 secondes
