@@ -53,3 +53,22 @@ async function updateChart() {
 }
 
 setInterval(updateChart, 5000); // Mise à jour toutes les 5 secondes
+if (Notification.permission !== "granted") {
+    Notification.requestPermission();
+}
+
+async function checkAlerts() {
+    const response = await fetch('/prix');
+    const data = await response.json();
+
+    data.forEach(item => {
+        if (item.name === "Bitcoin" && item.price > 50000) {
+            new Notification("🚀 Bitcoin explose !", {
+                body: `Le Bitcoin dépasse 50 000$ !`,
+                icon: "bitcoin.png"
+            });
+        }
+    });
+}
+
+setInterval(checkAlerts, 60000); // Vérifie toutes les 60 sec
