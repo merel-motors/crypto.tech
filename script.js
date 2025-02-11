@@ -64,7 +64,7 @@ async function checkAlerts() {
     data.forEach(item => {
         if (item.name === "Bitcoin" && item.price > 50000) {
             new Notification("🚀 Bitcoin explose !", {
-                body: `Le Bitcoin dépasse 50 000$ !`,
+                body: `Le Bitcoin dépasse 100 000$ !`,
                 icon: "bitcoin.png"
             });
         }
