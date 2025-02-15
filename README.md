@@ -1,6 +1,6 @@
-#ite
+#CryptoTech
 
-This is a simple website project that serves as a demonstration of basic web development practices.
+Ce site reference les crypto les plus populaires
 
 ## Project Structure
 
