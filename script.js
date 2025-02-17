@@ -44,7 +44,7 @@ const priceChart = new Chart(ctx, {
 });
 
 async function updateChart() {
-    const response = await fetch('/prix'); 
+    const response = await fetch('/price'); 
     const data = await response.json();
 
     priceChart.data.labels = data.map(d => d.date);
@@ -58,11 +58,11 @@ if (Notification.permission !== "granted") {
 }
 
 async function checkAlerts() {
-    const response = await fetch('/prix');
-    const data = await response.json();
+    const response = await fetch('/price');
+    const data = await response.json(price);
 
     data.forEach(item => {
-        if (item.name === "Bitcoin" && item.price > 50000) {
+        if (item.name === "Bitcoin" && item.price > 100000) {
             new Notification("🚀 Bitcoin explose !", {
                 body: `Le Bitcoin dépasse 100 000$ !`,
                 icon: "bitcoin.png"
@@ -142,7 +142,7 @@ async function checkAlerts() {
     
     data.forEach(crypto => {
         if (crypto.name === "Bitcoin" && crypto.price > 50000) {
-            new Notification("🚀 Bitcoin explose !", { body: `Le BTC dépasse 50 000$ !`, icon: "bitcoin.png" });
+            new Notification("🚀 Bitcoin explose !", { body: `Le BTC dépasse 100 000$ !`, icon: "bitcoin.png" });
         }
     });
 }
